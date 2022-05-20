@@ -8,14 +8,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     //function to fetch videos and create a div of the video elements 
     await cloudinaryfetch();
     // pre-load videos by getting the DOM elements
-    const loadedChromaVids = await loadVideos(".chroma-vid");
+    const loadedVideos = document.querySelectorAll(".chroma-vid");
+    for (const vid of loadedVideos) {
+        await vid.load();
+    }
     //button will appear upon load 
     const startButton = document.getElementById('startbutton');
     startButton.style.visibility = "visible";
 
     //start button to overcome IOS browser
     startButton.addEventListener('click', async () => {
-        await onInit(loadedChromaVids);
+        await onInit(loadedVideos);
         hideDiv();
         startButton.style.display = "none"; //button will disappear upon click
     })
@@ -77,14 +80,6 @@ async function createVideoElement(videoUrl) {
         video.playsInline = true;
     }
     return video;
-}
-
-async function loadVideos(associatedId) {
-    const loadedVideos = document.querySelectorAll(associatedId);
-    for (const vid of loadedVideos) {
-        await vid.load();
-    }
-    return loadedVideos;
 }
 
 async function onInit(loadedChromaVids) {
