@@ -32,24 +32,6 @@ async function cloudinaryfetch() {
     await createVideoDivision(myObject);
 }
 
-function hideDiv() {
-    const div = document.getElementById("welcome");
-    div.classList.toggle('hidden');
-}
-
-function createGSplane(GSvideo) {
-    const GStexture = new THREE.VideoTexture(GSvideo);
-    const GSgeometry = new THREE.PlaneGeometry(1, 1080 / 1920);
-    const GSmaterial = createChromaMaterial(GStexture, 0x00ff38);
-    const GSplane = new THREE.Mesh(GSgeometry, GSmaterial);
-    GSplane.scale.multiplyScalar(2);
-    //GSplane.position.z = 0.05;
-    GSplane.rotation.z = Math.PI / 2;
-    //GSplane.position.x = -0.2;
-
-    return GSplane
-}
-
 //helper function which creates one division consisting of multiple video elements
 //using the URLs fetched from API
 async function createVideoDivision(reviewObject) {
@@ -119,13 +101,29 @@ async function start_ar(loadedChromaVids) {
             anchor.onTargetLost = () => {
                 GSvideo.pause();
             }
-
         }
-
     }
-
     await mindarThree.start();
     await renderer.setAnimationLoop(async () => {
         await renderer.render(scene, camera);
     });
+}
+
+
+function createGSplane(GSvideo) {
+    const GStexture = new THREE.VideoTexture(GSvideo);
+    const GSgeometry = new THREE.PlaneGeometry(1, 1080 / 1920);
+    const GSmaterial = createChromaMaterial(GStexture, 0x00ff38);
+    const GSplane = new THREE.Mesh(GSgeometry, GSmaterial);
+    GSplane.scale.multiplyScalar(2);
+    //GSplane.position.z = 0.05;
+    GSplane.rotation.z = Math.PI / 2;
+    //GSplane.position.x = -0.2;
+
+    return GSplane
+}
+
+function hideDiv() {
+    const div = document.getElementById("welcome");
+    div.classList.toggle('hidden');
 }
