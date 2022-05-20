@@ -34,24 +34,24 @@ app.get("/", (req, res) => {
 // In this case, we are listening for GET requests to / which is the root of the website.
 // ==========================================================================================
 
-app.get('/api', function async(req, res) {
+app.get('/api', async function (req, res) {
 
-        var urlDict = {};
-        var expression = 'folder:' + 'demo';
-        cloudinary.v2.search.expression(expression // add your folder
-        ).sort_by('public_id', 'desc').max_results(30).execute().then(result => {
-            const videos = result.resources;
+    var urlDict = {};
+    var expression = 'folder:' + 'demo';
+    cloudinary.v2.search.expression(expression // add your folder
+    ).sort_by('public_id', 'desc').max_results(30).execute().then(result => {
+        const videos = result.resources;
 
-            videos.forEach((element, index) => {
-                urlDict[index] = element.url;
-            });
+        videos.forEach((element, index) => {
+            urlDict[index] = element.url;
+        });
 
-            res.json(urlDict);
+        res.json(urlDict);
 
 
-        }).catch(error => console.error(error));
+    }).catch(error => console.error(error));
 
-    }
+}
 
 );
 

@@ -31,5 +31,6 @@ export const createChromaMaterial = (texture, keyColor) => {
             "}",
         transparent: true
     });
+
     return material;
 }
