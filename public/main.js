@@ -4,7 +4,7 @@ const THREE = window.MINDAR.IMAGE.THREE;
 //const baseUrl = process.env.baseURL || "http://localhost:3000"
 const baseUrl = window.location.origin || "http://localhost:3000"
 
-document.addEventListener('DOMContentLoaded', async () => {
+window.addEventListener('load', async () => {
     //function to fetch videos and create a div of the video elements 
     await cloudinaryfetch();
     // pre-load videos by getting the DOM elements
@@ -12,13 +12,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     for (const vid of loadedVideos) {
         await vid.load();
     }
+    //start button to overcome IOS browser
+    await onInit(loadedVideos);
     //button will appear upon load 
     const startButton = document.getElementById('startbutton');
     startButton.style.visibility = "visible";
-
-    //start button to overcome IOS browser
     startButton.addEventListener('click', async () => {
-        await onInit(loadedVideos);
         hideDiv();
         startButton.style.display = "none"; //button will disappear upon click
     })
