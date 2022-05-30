@@ -6,14 +6,14 @@ const THREE = window.MINDAR.IMAGE.THREE;
 
 window.addEventListener('load', async () => {
     //function to fetch videos and create a div of the video elements 
-    await cloudinaryfetch();
+    const mind_file = await cloudinaryfetch();
     // pre-load videos by getting the DOM elements
     const loadedVideos = document.querySelectorAll(".chroma-vid");
     for (const vid of loadedVideos) {
         await vid.load();
     }
     //start button to overcome IOS browser
-    await onInit(loadedVideos);
+    await onInit(loadedVideos, mind_file);
     //button will appear upon load 
     const startButton = document.getElementById('startbutton');
     startButton.style.visibility = "visible";
@@ -29,8 +29,9 @@ async function cloudinaryfetch() {
     const key = `007d1d8e-425f-474d-a8a0-7235cad917c6`
     const baseUrl = "http://mind-ar-cms-dev.ap-southeast-1.elasticbeanstalk.com"
     const result = await axios.get(`${baseUrl}/file_management/public/file_obj/${key}`);
-    const myObject = result.data.data;
+    const myObject = result.data.data.data;
     await createVideoDivision(myObject);
+    return result.data.data.mind_file
 }
 
 //helper function which creates one division consisting of multiple video elements
@@ -65,20 +66,20 @@ async function createVideoElement(videoUrl) {
     return video;
 }
 
-async function onInit(loadedChromaVids) {
+async function onInit(loadedChromaVids, mind_file) {
     //should listen for clicks only after first page
     async function eventHandler(e) {
-        await start_ar(loadedChromaVids);
+        await start_ar(loadedChromaVids, mind_file);
         // remove this handler
         document.body.removeEventListener('click', eventHandler, false);
     }
     document.body.addEventListener("click", eventHandler);
 }
 
-async function start_ar(loadedChromaVids) {
+async function start_ar(loadedChromaVids, mind_file) {
     const mindarThree = new window.MINDAR.IMAGE.MindARThree({
         container: document.querySelector("#my-ar-container"),
-        imageTargetSrc: 'http://res.cloudinary.com/dwuqadyl0/raw/upload/v1653930595/mind_ar/targets-both/1e38422d-5a8b-45af-b89a-d012c2c3dd46',
+        imageTargetSrc: mind_file,
 
     });
     const { renderer, scene, camera } = mindarThree;
