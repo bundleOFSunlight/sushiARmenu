@@ -1,8 +1,8 @@
 import { createChromaMaterial } from '/chroma-video.js';
 
+
 const THREE = window.MINDAR.IMAGE.THREE;
 //const baseUrl = process.env.baseURL || "http://localhost:3000"
-const baseUrl = window.location.origin || "http://localhost:3000"
 
 window.addEventListener('load', async () => {
     //function to fetch videos and create a div of the video elements 
@@ -26,8 +26,10 @@ window.addEventListener('load', async () => {
 //helper functions
 
 async function cloudinaryfetch() {
-    const result = await axios.get(`${baseUrl}/api`);
-    const myObject = result.data;
+    const key = `007d1d8e-425f-474d-a8a0-7235cad917c6`
+    const baseUrl = "http://mind-ar-cms-dev.ap-southeast-1.elasticbeanstalk.com"
+    const result = await axios.get(`${baseUrl}/file_management/public/file_obj/${key}`);
+    const myObject = result.data.data;
     await createVideoDivision(myObject);
 }
 
@@ -37,7 +39,7 @@ async function createVideoDivision(reviewObject) {
     const currentDiv = document.getElementById("my-ar-container");
     const newDiv = document.createElement("div");
     newDiv.setAttribute("id", "newdiv");
-    for (const [key, value] of Object.entries(reviewObject)) {
+    for (const value of reviewObject) {
         const video = await createVideoElement(value);
         newDiv.appendChild(video);
     }
@@ -76,7 +78,7 @@ async function onInit(loadedChromaVids) {
 async function start_ar(loadedChromaVids) {
     const mindarThree = new window.MINDAR.IMAGE.MindARThree({
         container: document.querySelector("#my-ar-container"),
-        imageTargetSrc: 'targets-both.mind',
+        imageTargetSrc: 'http://res.cloudinary.com/dwuqadyl0/raw/upload/v1653930595/mind_ar/targets-both/1e38422d-5a8b-45af-b89a-d012c2c3dd46',
 
     });
     const { renderer, scene, camera } = mindarThree;
